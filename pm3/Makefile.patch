@@ -1,0 +1,15 @@
+--- Makefile.old 2013-12-30 09:34:00.000000000 +0000
++++ Makefile 2013-12-30 09:35:08.000000000 +0000
+@@ -24,9 +24,9 @@ QTLDLIBS = -L$(QTDIR)/lib -lQtCore4 -lQt
+MOC = $(QTDIR)/bin/moc
+LUAPLATFORM = mingw
+else ifeq ($(platform),Darwin)
+-CXXFLAGS = -I/opt/local/Library/Frameworks/QtGui.framework/Versions/4/Headers -I/opt/local/Library/Frameworks/QtCore.framework/Versions/4/Headers
+-QTLDLIBS = -lQtCore -lQtGui
+-MOC = moc
++CXXFLAGS = $(shell pkg-config --cflags QtCore QtGui 2>/dev/null) -Wall -O4
++QTLDLIBS = $(shell pkg-config --libs QtCore QtGui 2>/dev/null)
++MOC = $(shell pkg-config --variable=moc_location QtCore)
+LUAPLATFORM = macosx
+else
+CXXFLAGS = $(shell pkg-config --cflags QtCore QtGui 2>/dev/null) -Wall -O4
